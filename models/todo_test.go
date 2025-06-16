@@ -55,16 +55,39 @@ func TestCreateToDo(t *testing.T) {
 	}
 
 	for _, tt := range data {
-		_, result := models.CreateToDo(tt.title, tt.description, tt.state, db)
+		_, err := models.CreateToDo(tt.title, tt.description, tt.state, db)
 
-		if (result.Error != nil) != tt.wantError {
+		if (err != nil) != tt.wantError {
 			t.Errorf(`Eror occured injecting data to database for Todo with parameters 
 				Title - %s, 
 				Description - %s, 
 				State - %d, 
 				expected error to be %t but was %t`,
-				tt.title, tt.description, tt.state, tt.wantError, result.Error != nil)
+				tt.title, tt.description, tt.state, tt.wantError, err != nil)
 		}
 	}
 
+}
+
+// Test reading of ToDo list
+func TestToDos(t *testing.T) {
+	envPath, _ := services.EnvPath()
+	dbFilename, _ := services.EnvDatabaseFileName(envPath, "TEST_DB")
+	path, _ := services.AbsDatabasePath(dbFilename)
+	services.RemoveFile(path) // restart db data
+	db, _ := scripts.AutoMigrate(path)
+
+	result, err := models.ToDos(db)
+
+	if err != nil || len(result) != 0 {
+		t.Error("Databse should be empty in the beggining")
+	}
+
+	todo := models.ToDo{Title: "Task XPTO", Description: "Description of task XPTO", State: uint8(1)}
+	db.Create(&todo)
+
+	result, err = models.ToDos(db)
+	if err != nil || len(result) != 1 {
+		t.Error("Databse should be with one row at this point")
+	}
 }

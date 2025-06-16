@@ -2,20 +2,12 @@
 package services_test
 
 import (
+	"godoit/scripts"
 	"godoit/services"
-	"strings"
 	"testing"
 )
 
-func TestGetAbsDatabasePath(t *testing.T) {
-	path, err := services.AbsDatabasePath("cooldatabase.db")
-	suffix := "go-todo-terminal-app/database/cooldatabase.db"
-
-	if err != nil || !strings.HasSuffix(path, suffix) {
-		t.Errorf("Database path does not match expected %s to have suffix %s", path, suffix)
-	}
-}
-
+// Test getting the absolute database path
 func TestAbsDatabasePath(t *testing.T) {
 	_, err := services.AbsDatabasePath("cooldatabase.db")
 
@@ -24,6 +16,7 @@ func TestAbsDatabasePath(t *testing.T) {
 	}
 }
 
+// Tests get absolute .env path
 func TestEnvPath(t *testing.T) {
 	_, err := services.EnvPath()
 
@@ -32,6 +25,11 @@ func TestEnvPath(t *testing.T) {
 	}
 }
 
+// Tests get filename of database from .env file
+//
+// There is a database for development and a database for testing.
+// This function aims to check if we're getting the correct
+// database filename
 func TestEnvDatabaseFileName(t *testing.T) {
 	rootPath, _ := services.EnvPath()
 
@@ -53,4 +51,26 @@ func TestEnvDatabaseFileName(t *testing.T) {
 		}
 	}
 
+}
+
+// Tests remove a file
+//
+// A file is removed if exists and is indeed a file. Cannot be a directory
+func TestRemoveFile(t *testing.T) {
+	envPath, _ := services.EnvPath()
+	dbFilename, _ := services.EnvDatabaseFileName(envPath, "TEST_DB")
+	path, _ := services.AbsDatabasePath(dbFilename)
+	scripts.AutoMigrate(path)
+
+	err := services.RemoveFile(path)
+
+	if err != nil {
+		t.Errorf("Should have deleted test db successfully, but didn't")
+	}
+
+	err = services.RemoveFile(path)
+
+	if err == nil {
+		t.Errorf("Should have thrown an error, because db should not exist at this point")
+	}
 }

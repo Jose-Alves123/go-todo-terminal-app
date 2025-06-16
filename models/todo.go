@@ -12,7 +12,7 @@ import (
 // may not have been completed
 type ToDo struct {
 	gorm.Model
-	Id          int            `gorm:"index;primaryKey;autoIncrement:true;unique"`
+	ID          int            `gorm:"index;primaryKey;autoIncrement:true;unique"`
 	Title       string         `gorm:"column:title;not null;check:(length(title)>=5 and length(title)<=50)"`
 	Description string         `gorm:"column:description;type:text;check:length(description)<=256"`
 	State       uint8          `gorm:"column:state;not null;default:0;check:state>=0 and state<=2"`
@@ -36,8 +36,15 @@ func ValidateCreation(title *string, description *string, state *uint8) (bool, e
 }
 
 // Adds ToDo to dabase
-func CreateToDo(title string, description string, state uint8, db *gorm.DB) (ToDo, *gorm.DB) {
+func CreateToDo(title string, description string, state uint8, db *gorm.DB) (ToDo, error) {
 	toDo := ToDo{Title: title, Description: description, State: uint8(state)}
 	result := db.Create(&toDo)
-	return toDo, result
+	return toDo, result.Error
+}
+
+// Get all ToDos from database
+func ToDos(db *gorm.DB) ([]ToDo, error) {
+	var toDos []ToDo
+	result := db.Find(&toDos)
+	return toDos, result.Error
 }
