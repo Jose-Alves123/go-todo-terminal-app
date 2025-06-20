@@ -45,4 +45,4 @@ go test ./... -coverprofile cover.out
 
 # Terminal Interface
 
-In the future a terminal interface will be added to facilitate the use of the program. For that, [bubbletea](https://github.com/charmbracelet/bubbletea) will be used.
+The TUI is using [bubbletea](https://github.com/charmbracelet/bubbletea), with lipgloss and bubbles.
