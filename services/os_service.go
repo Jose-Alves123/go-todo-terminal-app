@@ -4,6 +4,7 @@
 package services
 
 import (
+	"errors"
 	"os"
 	"strings"
 
@@ -48,6 +49,24 @@ func EnvDatabaseFileName(fileLocation string, env string) (string, error) {
 	}
 
 	return os.Getenv(env), nil
+}
+
+// Given parameter filePath as string, deletes file.
+//
+// document of filePath must be a file. If is directory
+// or doucment does not exist, returns error.
+func RemoveFile(filePath string) error {
+	fileInfo, err := os.Stat(filePath)
+
+	if err != nil {
+		return err
+	}
+
+	if fileInfo.IsDir() {
+		return errors.ErrUnsupported
+	}
+
+	return os.Remove(filePath)
 }
 
 // Get the full absolute path to the project root directory

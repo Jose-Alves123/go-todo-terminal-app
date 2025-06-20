@@ -1,6 +1,6 @@
 # GoDoIt
 
-This terminal application aims to provide aid to developers to schedule their tasks.
+This terminal application aims to provide aid for developers to schedule their tasks.
 
 To run the application, in the project root directory, run:
 
@@ -10,20 +10,22 @@ go run ./cmd/app/main.go
 
 ## Features
 
-- ✅ create ToDo
+- ✅ Create ToDo
 - ❌ Edit ToDo
 - ❌ Delete ToDo
-- ❌ List ToDo
-- ❌ create new comments on ToDo
-- ❌ allow user to add new states of ToDo (besides the base states To Do, Doing, Done)
-- ❌ create new tags (ex: work, personal, adventure, misc, gaming, programming)
-- ❌ create new groups (ex: work, personal, adventure, misc, gaming, programming)
-- ❌ filter ToDo based on state, groups and / or tags
-- ❌ allow ToDo to have up to one group
-- ❌ allow ToDo to have n tags
-- ❌ in application show calendar of states changes of todos
-- ❌ show graphics of states of ToDos over time
-- ❌ create command to allow info to be shown on terminal, every time is started, about the number of incomplete ToDos
+- ✅ List ToDo
+- ✅ Allow delete local database
+- ❌ Create new comments on ToDo
+- ❌ Allow user to add new states of ToDo (besides the base states To Do, Doing, Done)
+- ❌ Create new tags (ex: work, personal, adventure, misc, gaming, programming)
+- ❌ Create new groups (ex: work, personal, adventure, misc, gaming, programming)
+- ❌ Filter ToDo based on state, groups and / or tags
+- ❌ Allow ToDo to have up to one group
+- ❌ Allow ToDo to have n tags
+- ❌ In application show calendar of states changes of todos
+- ❌ Show graphics of states of ToDos over time
+- ❌ Create command to allow info to be shown on terminal, every time is started, about the number of incomplete ToDos
+- ❌ Add Locatization for English and Portuguese, allowing user to use language of choice
 
 ## Technologies used
 
@@ -43,4 +45,4 @@ go test ./... -coverprofile cover.out
 
 # Terminal Interface
 
-In the future a terminal interface will be added to facilitate the use of the program. For that, [bubbletea](https://github.com/charmbracelet/bubbletea) will be used.
+The TUI is using [bubbletea](https://github.com/charmbracelet/bubbletea), with lipgloss and bubbles.
