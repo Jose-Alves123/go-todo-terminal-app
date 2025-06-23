@@ -91,3 +91,36 @@ func TestToDos(t *testing.T) {
 		t.Error("Databse should be with one row at this point")
 	}
 }
+
+// Test deletion of task from table todo
+func TestDeleteToDo(t *testing.T) {
+	envPath, _ := services.EnvPath()
+	dbFilename, _ := services.EnvDatabaseFileName(envPath, "TEST_DB")
+	path, _ := services.AbsDatabasePath(dbFilename)
+	services.RemoveFile(path) // restart db data
+	db, _ := scripts.AutoMigrate(path)
+
+	firstToDo := models.ToDo{Title: "My first task", Description: "Description of my first task", State: uint8(0)}
+	secondToDo := models.ToDo{Title: "My second task", Description: "Description of my second task", State: uint8(1)}
+	db.Create(&firstToDo)
+	db.Create(&secondToDo)
+
+	twoToDos, err := models.ToDos(db)
+	if err != nil || len(twoToDos) != 2 {
+		t.Error("Databse should be with two rows at this point")
+	}
+
+	models.DeleteToDo(firstToDo, db)
+
+	oneToDo, err := models.ToDos(db)
+	if err != nil || len(oneToDo) != 1 {
+		t.Error("Databse should be with one row at this point")
+	}
+
+	models.DeleteToDo(secondToDo, db)
+
+	zeroToDo, err := models.ToDos(db)
+	if err != nil || len(zeroToDo) != 0 {
+		t.Error("Databse should be with no rows at this point")
+	}
+}

@@ -42,6 +42,11 @@ func CreateToDo(title string, description string, state uint8, db *gorm.DB) (ToD
 	return toDo, result.Error
 }
 
+// Delete task from ToDo table
+func DeleteToDo(toDo ToDo, db *gorm.DB) {
+	db.Delete(&toDo)
+}
+
 // Get all ToDos from database
 func ToDos(db *gorm.DB) ([]ToDo, error) {
 	var toDos []ToDo
