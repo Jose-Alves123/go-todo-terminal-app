@@ -12,7 +12,7 @@ go run ./cmd/app/main.go
 
 - ✅ Create ToDo
 - ❌ Edit ToDo
-- ❌ Delete ToDo
+- ✅ Delete ToDo
 - ✅ List ToDo
 - ✅ Allow delete local database
 - ❌ Create new comments on ToDo

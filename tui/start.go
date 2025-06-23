@@ -2,6 +2,7 @@ package tui
 
 import (
 	"fmt"
+	"godoit/models"
 	"os"
 
 	"github.com/charmbracelet/bubbles/cursor"
@@ -38,6 +39,7 @@ type ToDoForm struct {
 type home struct {
 	tea.Model
 	choices    []string
+	todos      []models.ToDo
 	table      table.Model
 	cursor     int
 	formCursor cursor.Mode

@@ -69,6 +69,7 @@ func getTable(m home) home {
 
 	rows := []table.Row{}
 	toDos, _ := models.ToDos(m.db)
+	m.todos = toDos
 	for _, toDo := range toDos {
 		rows = append(rows, table.Row{toDo.Title, toDo.Description, strconv.Itoa(int(toDo.State))})
 	}
@@ -95,6 +96,18 @@ func getTable(m home) home {
 
 	m.table = t
 	return m
+}
+
+// Delete the two in the index m.cursor in the table m.todos.
+//
+// Returns the new table, styled
+func deleteToDo(m home) home {
+	toDo := m.todos[m.cursor]
+
+	models.DeleteToDo(toDo, m.db)
+	m.cursor--
+
+	return getTable(m)
 }
 
 // Create a spinner model
