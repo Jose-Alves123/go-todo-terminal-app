@@ -42,6 +42,19 @@ func CreateToDo(title string, description string, state uint8, db *gorm.DB) (ToD
 	return toDo, result.Error
 }
 
+// Èdits task with giben ID
+//
+// Returns error if any
+func EditToDo(id int, title string, description string, state uint8, db *gorm.DB) error {
+	result := db.Model(&ToDo{ID: id}).Updates(ToDo{
+		Title:       title,
+		Description: description,
+		State:       state,
+	})
+
+	return result.Error
+}
+
 // Delete task from ToDo table
 func DeleteToDo(toDo ToDo, db *gorm.DB) {
 	db.Delete(&toDo)

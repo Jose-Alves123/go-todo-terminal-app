@@ -69,6 +69,41 @@ func TestCreateToDo(t *testing.T) {
 
 }
 
+func TestEditToDo(t *testing.T) {
+	var firstToDoUpdated models.ToDo
+	var secondToDoUpdated models.ToDo
+
+	envPath, _ := services.EnvPath()
+	dbFilename, _ := services.EnvDatabaseFileName(envPath, "TEST_DB")
+	path, _ := services.AbsDatabasePath(dbFilename)
+	services.RemoveFile(path) // restart db data
+	db, _ := scripts.AutoMigrate(path)
+
+	firstToDo, _ := models.CreateToDo("My first task", "Description of my first task", uint8(0), db)
+	secondToDo, _ := models.CreateToDo("My second task", "Description of my second task", uint8(1), db)
+
+	err := models.EditToDo(firstToDo.ID, "My first task updated", "Description of my first task updated", uint8(1), db)
+	db.First(&firstToDoUpdated, firstToDo.ID)
+
+	if err != nil ||
+		firstToDoUpdated.Title != "My first task updated" ||
+		firstToDoUpdated.Description != "Description of my first task updated" ||
+		firstToDoUpdated.State != uint8(1) {
+		t.Errorf("Task with id %d does not match expect value", firstToDo.ID)
+	}
+
+	err = models.EditToDo(secondToDo.ID, "My second task updated", "Description of my second task updated", uint8(2), db)
+	db.First(&secondToDoUpdated, secondToDo.ID)
+
+	if err != nil ||
+		secondToDoUpdated.Title != "My second task updated" ||
+		secondToDoUpdated.Description != "Description of my second task updated" ||
+		secondToDoUpdated.State != uint8(2) {
+		t.Errorf("Task with id %d does not match expect value updated title - %s, description %s", secondToDoUpdated.ID, secondToDoUpdated.Title, secondToDoUpdated.Description)
+	}
+
+}
+
 // Test reading of ToDo list
 func TestToDos(t *testing.T) {
 	envPath, _ := services.EnvPath()
