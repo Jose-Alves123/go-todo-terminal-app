@@ -30,6 +30,7 @@ type stateButton struct {
 }
 
 type ToDoForm struct {
+	ID          int
 	Title       textinput.Model
 	Description textarea.Model
 	State       stateButton

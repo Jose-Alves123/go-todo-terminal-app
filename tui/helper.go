@@ -29,7 +29,7 @@ func createForm(title string, description string, state int) ToDoForm {
 	titleInput.CharLimit = 50
 
 	descriptionInput := textarea.New()
-	//descriptionInput.SetValue(description)
+	descriptionInput.SetValue(description)
 	descriptionInput.Cursor.Style = CursorStyle
 	descriptionInput.Placeholder = "Write the Description of the task here..."
 	descriptionInput.Blur()
@@ -37,7 +37,13 @@ func createForm(title string, description string, state int) ToDoForm {
 
 	stateOptions := stateButton{choices: []string{"To Do", "Doing", "Donne"}, selected: state}
 
-	return ToDoForm{Title: titleInput, Description: descriptionInput, State: stateOptions, Len: 3}
+	return ToDoForm{ID: 0, Title: titleInput, Description: descriptionInput, State: stateOptions, Len: 3}
+}
+
+func editForm(title string, description string, state int, id int) ToDoForm {
+	todoForm := createForm(title, description, state)
+	todoForm.ID = id
+	return todoForm
 }
 
 // Manage teh form of the task to edit or create.

@@ -11,7 +11,7 @@ go run ./cmd/app/main.go
 ## Features
 
 - ✅ Create ToDo
-- ❌ Edit ToDo
+- ✅ Edit ToDo
 - ✅ Delete ToDo
 - ✅ List ToDo
 - ✅ Allow delete local database

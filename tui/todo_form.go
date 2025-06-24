@@ -25,8 +25,13 @@ func formUpdate(msg tea.Msg, m home) (tea.Model, tea.Cmd) {
 				stateVal := uint8(m.inputs.State.selected)
 				passes, _ := models.ValidateCreation(&titleVal, &descriptionVal, &stateVal)
 				if passes {
-					models.CreateToDo(titleVal, descriptionVal, stateVal, m.db)
+					if m.inputs.ID != 0 {
+						models.EditToDo(m.inputs.ID, titleVal, descriptionVal, stateVal, m.db)
+					} else {
+						models.CreateToDo(titleVal, descriptionVal, stateVal, m.db)
+					}
 					m.page = 0
+
 				}
 				return m, nil
 			} else if m.focusIndex > m.inputs.Len-2 {
